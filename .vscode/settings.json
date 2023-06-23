@@ -1,0 +1,3 @@
+{
+    "dotnet.defaultSolution": "App/api.ipv4/api.ipv4.sln"
+}

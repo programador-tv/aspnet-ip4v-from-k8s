@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipv4
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipv4
+  template:
+    metadata:
+      labels:
+        app: ipv4
+    spec:
+      containers:
+      - name: ipv4
+        image: ghcr.io/programador-tv/ipv4:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://*:80
+      imagePullSecrets:
+      - name: ghcr-credentials
