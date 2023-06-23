@@ -7,10 +7,17 @@ EnableForwardedHeaders(app);
 app.MapGet("/", (ctx) => {
 
     var ipv4 = string.Empty;
-    var remoteIpAddress = ctx.Connection.RemoteIpAddress;
-    if(remoteIpAddress != null)
+    if (ctx.Request.Headers.ContainsKey("X-Forwarded-For"))
     {
-        ipv4 = remoteIpAddress.ToString();
+        ipv4 = ctx.Request.Headers["X-Forwarded-For"].First();
+    }
+    else
+    {
+        var remoteIpAddress = ctx.Connection.RemoteIpAddress;
+        if(remoteIpAddress != null)
+        {
+            ipv4 = remoteIpAddress.ToString();
+        }
     }
     _ = ctx.Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes(ipv4));
     return Task.CompletedTask;
