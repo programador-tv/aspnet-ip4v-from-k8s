@@ -1,9 +1,24 @@
 using System.Text;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 EnableForwardedHeaders(app);
+app.MapGet("/h", (ctx) => {
+    
+
+    var result = ctx.Request.Headers;
+    string dict = string.Empty;
+    foreach(var item in result)
+    {
+        dict += $"{item.Key} : {item.Value}\n";
+    }
+
+    ctx.Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes(dict));
+    return Task.CompletedTask;
+   
+});
 app.MapGet("/", (ctx) => {
 
     var ipv4 = string.Empty;
